@@ -70,7 +70,7 @@
 
         <main>
             <section id="service-details" class="mb-12 min-h-[160px] bg-white p-6 rounded-2xl shadow-sm border border-gray-200 transition-all duration-300">
-                 <div id="details-content" class="text-center">
+                <div id="details-content" class="text-center">
                     <h2 class="text-2xl font-bold text-gray-900 mb-2">Bem-vindo!</h2>
                     <p class="text-gray-600">Ter um controle financeiro e gerencial sólido é a chave para o crescimento sustentável. Nossas ferramentas ajudam a analisar custos de produtos e serviços, otimizando o seu negócio para maior eficiência e lucratividade. Selecione um serviço abaixo para ver mais detalhes.</p>
                     <!-- Novo parágrafo com o hiperlink -->
@@ -136,9 +136,9 @@
             
             <!-- O gráfico de serviços foi movido para o final da página, antes da seção de contato e do rodapé -->
             <section id="financial-management" class="mt-12">
-                 <div class="bg-white p-6 rounded-2xl shadow-sm h-full border border-gray-200">
+                <div class="bg-white p-6 rounded-2xl shadow-sm h-full border border-gray-200">
                     <h2 class="text-2xl font-bold text-gray-900 mb-1">Visão Geral dos Serviços</h2>
-                     <p class="text-gray-600 mb-4">Este gráfico ilustra a distribuição de nossos serviços nas principais áreas de atuação, oferecendo um panorama rápido de nossas competências.</p>
+                    <p class="text-gray-600 mb-4">Este gráfico ilustra a distribuição de nossos serviços nas principais áreas de atuação, oferecendo um panorama rápido de nossas competências.</p>
                     <div class="chart-container">
                         <canvas id="servicesChart"></canvas>
                     </div>
@@ -153,6 +153,22 @@
                 <a href="https://wa.me/5516993342929" class="inline-block mt-4 bg-white text-green-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full shadow-md transition duration-300">
                     <span class="text-2xl align-middle">&#x1F4F1;</span> 
                     <span class="ml-2 align-middle">16 99334-2929</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Nova seção para Redes Sociais -->
+        <section id="social-media" class="mt-8 mb-12">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 text-center">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Siga-nos nas Redes Sociais!</h2>
+                <a href="https://www.instagram.com/nexus.assessoriaempresarial?igsh=ZXM2a2RpcHllMDkw&utm_source=qr" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-br from-purple-500 via-pink-500 to-yellow-500 text-white p-3 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                    <!-- Ícone do Instagram em SVG, estilizado para parecer o ícone do aplicativo -->
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span class="sr-only">Instagram</span>
                 </a>
             </div>
         </section>
@@ -243,9 +259,9 @@
                 const card = document.createElement('div');
                 card.className = 'service-card bg-gray-50 p-4 rounded-xl border-2 border-gray-200 cursor-pointer flex items-center space-x-4';
                 card.innerHTML = `<div class="text-3xl">${service.icon}</div>
-                                  <div>
-                                      <h3 class="font-bold text-gray-800">${service.title}</h3>
-                                  </div>`;
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">${service.title}</h3>
+                                    </div>`;
                 card.addEventListener('click', () => {
                     if (activeCard) {
                         activeCard.classList.remove('active-card', 'bg-indigo-50');
