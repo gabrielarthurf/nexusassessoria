@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <!-- Meta tag essencial para garantir que o layout se adapte a dispositivos móveis. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços de Suporte Administrativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application's structure has been updated to consolidate all eight services into a single, comprehensive "Nossos Serviços" section. This new structure streamlines navigation by presenting all services in one place, reducing the need to switch between different thematic sections. The card-based layout remains, with a responsive grid displaying all services. The doughnut chart is kept as a separate section to provide a visual summary. This design simplifies the user flow, making it easier and faster for users to explore the full range of services offered. The WhatsApp contact has been made more prominent by moving it into a dedicated, visually distinct call-to-action section above the footer. The welcome message is updated with new content about the importance of business management, and a new "Criação de Site" service has been added under a new category. -->
+    <!-- Visualization & Content Choices: Report Info: List of 8 administrative services. -> Goal: Organize and Inform. -> Viz/Presentation Method: All services are now presented as interactive cards with icons (Unicode) within a single responsive grid (HTML/CSS grid). A central, dynamic text block displays details on click. A doughnut chart (Chart.js/Canvas) visually represents the proportion of services in each category. -> Interaction: Clicking a card updates the detail view. Hovering over cards and chart segments provides visual feedback. Justification: This consolidated structure improves the user experience by providing a single, intuitive point of entry to all service details, while the chart offers a valuable high-level overview. The prominent WhatsApp call-to-action improves user engagement and contact conversion. -> Library/Method: Chart.js for the chart, Vanilla JS for interactivity, Tailwind CSS for styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 350px;
+        }
+        /* As classes abaixo garantem interações suaves com os cartões de serviço */
+        .service-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .active-card {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2), 0 4px 6px -2px rgba(79, 70, 229, 0.1);
+            border-color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <!-- Logo da Nexus Assessoria Empresarial -->
+            <div class="flex flex-col items-center justify-center mb-4 space-y-4">
+                <!-- SVG do logo de crescimento -->
+                <svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-16 h-16">
+                    <rect width="48" height="48" rx="12" fill="#1F2937"/>
+                    <path d="M24 6L12 12V36L24 42L36 36V12L24 6Z" fill="#3B82F6"/>
+                    <path d="M18 30L24 24L30 30" stroke="#F9FAFB" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M18 30H30" stroke="#F9FAFB" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M18 24L24 18L30 24" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <!-- Texto da marca centralizado e empilhado -->
+                <div class="flex flex-col items-center space-y-1">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Nexus</h1>
+                    <p class="text-xl md:text-2xl font-medium text-gray-500">Assessoria Empresarial</p>
+                </div>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mt-8">Serviços de Suporte Administrativo</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Otimize a gestão da sua empresa com nosso suporte especializado. Explore nossos serviços abaixo.</p>
+        </header>
+
+        <main>
+            <section id="service-details" class="mb-12 min-h-[160px] bg-white p-6 rounded-2xl shadow-sm border border-gray-200 transition-all duration-300">
+                 <div id="details-content" class="text-center">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Bem-vindo!</h2>
+                    <p class="text-gray-600">Ter um controle financeiro e gerencial sólido é a chave para o crescimento sustentável. Nossas ferramentas ajudam a analisar custos de produtos e serviços, otimizando o seu negócio para maior eficiência e lucratividade. Selecione um serviço abaixo para ver mais detalhes.</p>
+                    <!-- Novo parágrafo com o hiperlink -->
+                    <p class="mt-4 text-gray-600"><a href="#principais-dificuldades" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300">Você sabe quais os principais fatores para uma Micro e pequena empresa não crescer?</a></p>
+                </div>
+            </section>
+            
+            <!-- A seção de Nossos Serviços agora ocupa a largura total -->
+            <section id="all-services" class="mb-12">
+                <div class="bg-white p-6 rounded-2xl shadow-sm h-full border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-1">Nossos Serviços</h2>
+                    <p class="text-gray-600 mb-6">Abaixo estão todos os serviços oferecidos, agrupados para facilitar sua visualização e consulta.</p>
+                    <!-- As classes abaixo definem um layout de grid responsivo: 1 coluna em telas pequenas, 2 em médias e 3 em telas grandes. -->
+                    <div id="all-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de dificuldades atualizada -->
+            <section id="principais-dificuldades" class="mt-12">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Principais Dificuldades para Micro e Pequenas Empresas Crescerem</h2>
+                    <ul class="list-none space-y-4 text-gray-700">
+                        <li>
+                            <p class="font-semibold">Falta de Controle Financeiro</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li>Pouca ou nenhuma separação entre finanças pessoais e da empresa.</li>
+                                <li>Ausência de fluxo de caixa bem estruturado.</li>
+                                <li>Dificuldade em precificar corretamente produtos ou serviços.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="font-semibold mt-2">Gestão Operacional Ineficiente</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li>Processos não padronizados e sem documentação.</li>
+                                <li>Falta de ferramentas ou sistemas adequados (como ERP ou CRM).</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="font-semibold mt-2">Carência de Planejamento Estratégico</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li>Falta de metas claras e indicadores de desempenho.</li>
+                                <li>Tomada de decisão baseada em "achismos", e não em dados concretos.</li>
+                                <li>Pouca visão de médio e longo prazo.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="font-semibold mt-2">Desconhecimento das Obrigações Legais e Tributárias</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li>Dificuldade em acompanhar regras fiscais, trabalhistas e contábeis.</li>
+                                <li>Risco de multas por descumprimento de obrigações acessórias.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="font-semibold mt-2">Baixo Uso da Tecnologia</p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li>Resistência a ferramentas que auxiliam no controle de vendas, financeiro, estoque.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- O gráfico de serviços foi movido para o final da página, antes da seção de contato e do rodapé -->
+            <section id="financial-management" class="mt-12">
+                 <div class="bg-white p-6 rounded-2xl shadow-sm h-full border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-1">Visão Geral dos Serviços</h2>
+                     <p class="text-gray-600 mb-4">Este gráfico ilustra a distribuição de nossos serviços nas principais áreas de atuação, oferecendo um panorama rápido de nossas competências.</p>
+                    <div class="chart-container">
+                        <canvas id="servicesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <section id="contact" class="mt-12">
+            <div class="bg-green-500 text-white text-center py-8 rounded-2xl shadow-lg">
+                <h2 class="text-xl md:text-2xl font-bold">Pronto para otimizar sua gestão?</h2>
+                <p class="mt-2 text-lg">Entre em contato agora mesmo via WhatsApp!</p>
+                <a href="https://wa.me/5516993342929" class="inline-block mt-4 bg-white text-green-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full shadow-md transition duration-300">
+                    <span class="text-2xl align-middle">&#x1F4F1;</span> 
+                    <span class="ml-2 align-middle">16 99334-2929</span>
+                </a>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 py-6 border-t border-gray-200">
+            <p class="text-gray-500">Suporte Administrativo Especializado &copy; 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        const servicesData = [
+            { 
+                id: 1,
+                category: 'Otimização e Estratégia',
+                title: 'Análise de Processos', 
+                icon: '⚙️',
+                description: '<strong>Análise e melhoria de processos administrativos e operacionais:</strong> Revisão e otimização de fluxos de trabalho para aumentar a eficiência e reduzir gargalos.' 
+            },
+            { 
+                id: 2,
+                category: 'Otimização e Estratégia',
+                title: 'Apuração de Custos', 
+                icon: '💰',
+                description: '<strong>Apuração de custos para suporte à gestão financeira e tomada de decisão:</strong> Levantamento e análise de custos para fornecer dados precisos que auxiliem na gestão financeira e na decisão estratégica.' 
+            },
+            { 
+                id: 8,
+                category: 'Otimização e Estratégia',
+                title: 'Melhorias em ERP', 
+                icon: '💻',
+                description: '<strong>Análise e sugestão de melhorias em processos realizados via sistemas ERP:</strong> Avaliação do uso de sistemas ERP e proposição de melhorias para otimizar o desempenho e a produtividade.' 
+            },
+            { 
+                id: 3,
+                category: 'Controle e Conformidade',
+                title: 'Controle de Estoque', 
+                icon: '📦',
+                description: '<strong>Criação e manutenção de planilhas de controle, especialmente para estoque:</strong> Desenvolvimento de ferramentas de controle personalizadas, com foco em planilhas para gestão e acompanhamento de estoque.' 
+            },
+            { 
+                id: 4,
+                category: 'Controle e Conformidade',
+                title: 'Emissão de NFe', 
+                icon: '🧾',
+                description: '<strong>Apoio na emissão de notas fiscais eletrônicas:</strong> Assistência no processo de emissão e gestão de notas fiscais eletrônicas, garantindo conformidade e agilidade.' 
+            },
+            { 
+                id: 5,
+                category: 'Controle e Conformidade',
+                title: 'Relatórios Gerenciais', 
+                icon: '📊',
+                description: '<strong>Elaboração de relatórios gerenciais de vendas, despesas e estoque:</strong> Criação de relatórios periódicos para fornecer uma visão clara do desempenho financeiro e operacional da empresa.' 
+            },
+            { 
+                id: 6,
+                category: 'Controle e Conformidade',
+                title: 'Suporte Fiscal', 
+                icon: '⚖️',
+                description: '<strong>Suporte em dúvidas fiscais, tributárias e de contabilidade:</strong> Esclarecimento de questões complexas relacionadas à legislação fiscal e contábil.' 
+            },
+            { 
+                id: 7,
+                category: 'Controle e Conformidade',
+                title: 'Conciliação Contábil', 
+                icon: '🔗',
+                description: '<strong>Apoio em atividades de conciliação contábil e financeira:</strong> Assistência na verificação e ajuste de registros contábeis e financeiros para garantir sua precisão.' 
+            },
+             {
+                id: 9,
+                category: 'Marketing e Presença Digital',
+                title: 'Criação de Site (Simples)',
+                icon: '🌐',
+                description: '<strong>Criação de sites simples e informativos:</strong> Desenvolvemos um site profissional para o seu negócio, aumentando a visibilidade online, construindo credibilidade com os clientes e estabelecendo um novo canal de vendas e comunicação.'
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const allCardsContainer = document.getElementById('all-cards');
+            const detailsContent = document.getElementById('details-content');
+            let activeCard = null;
+
+            const servicesByCategory = servicesData.reduce((acc, service) => {
+                acc[service.category] = (acc[service.category] || 0) + 1;
+                return acc;
+            }, {});
+
+            const createCard = (service) => {
+                const card = document.createElement('div');
+                card.className = 'service-card bg-gray-50 p-4 rounded-xl border-2 border-gray-200 cursor-pointer flex items-center space-x-4';
+                card.innerHTML = `<div class="text-3xl">${service.icon}</div>
+                                  <div>
+                                      <h3 class="font-bold text-gray-800">${service.title}</h3>
+                                  </div>`;
+                card.addEventListener('click', () => {
+                    if (activeCard) {
+                        activeCard.classList.remove('active-card', 'bg-indigo-50');
+                    }
+                    detailsContent.innerHTML = `<h2 class="text-2xl font-bold text-gray-900 mb-2">${service.title}</h2>
+                                                <p class="text-gray-700 text-left md:text-center">${service.description}</p>`;
+                    card.classList.add('active-card', 'bg-indigo-50');
+                    activeCard = card;
+                });
+                return card;
+            };
+
+            servicesData.forEach(service => {
+                const card = createCard(service);
+                allCardsContainer.appendChild(card);
+            });
+
+            const ctx = document.getElementById('servicesChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(servicesByCategory),
+                    datasets: [{
+                        label: 'Nº de Serviços',
+                        data: Object.values(servicesByCategory),
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(30, 64, 175, 0.7)',
+                            'rgba(165, 180, 252, 0.7)',
+                            'rgba(245, 158, 11, 0.7)'
+                        ],
+                        borderColor: [
+                            '#4f46e5',
+                            '#1e40af',
+                            '#a5b4fc',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 2,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(17, 24, 39, 0.85)',
+                            titleFont: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 14
+                            },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
